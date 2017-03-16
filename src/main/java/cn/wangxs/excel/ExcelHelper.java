@@ -1,9 +1,16 @@
 package cn.wangxs.excel;
 
+import java.beans.IntrospectionException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import cn.wangxs.excel.read.utils.BaseReadUtil;
+import cn.wangxs.excel.write.utils.BaseWriteUtil;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 /**
  * 工具入口
@@ -22,8 +29,9 @@ public class ExcelHelper {
      * @param clazz      实体类型
      * @return byte数组
      */
-    public static byte[] write(Collection<?> collection, Class<?> clazz) {
-        return null;
+    public static byte[] write(Collection<?> collection, Class<?> clazz) throws InvocationTargetException,
+            IntrospectionException, IllegalAccessException, NoSuchFieldException {
+        return BaseWriteUtil.write(collection, clazz, 0);
     }
 
     /**
@@ -36,19 +44,19 @@ public class ExcelHelper {
      * @param tag        标记
      * @return byte数组
      */
-    public static byte[] write(Collection<?> collection, Class<?> clazz, int tag) {
-        return null;
+    public static byte[] write(Collection<?> collection, Class<?> clazz, int tag) throws InvocationTargetException,
+            IntrospectionException, IllegalAccessException, NoSuchFieldException {
+        return BaseWriteUtil.write(collection, clazz, tag);
     }
 
     /**
-     * 读取excel文件为Map类型的列表（）
+     * 读取excel文件为Map类型的列表
      *
      * @param is excel文件流
      * @return Map类型的列表
-     * @throws Exception 异常信息
      */
-    public static List<Map<String, String>> read(InputStream is) throws Exception {
-        return null;
+    public static List<Map<String, String>> read(InputStream is) throws IOException, InvalidFormatException {
+        return BaseReadUtil.read(is);
     }
 
     /**
@@ -58,10 +66,12 @@ public class ExcelHelper {
      * @param clazz 实体类型
      * @param <T>   泛型类型
      * @return 泛型列表
-     * @throws Exception 异常信息
      */
-    public static <T> List<T> read(InputStream is, Class<T> clazz) throws Exception {
-        return null;
+    public static <T> List<T> read(InputStream is, Class<T> clazz) throws IllegalAccessException,
+            IntrospectionException, InvalidFormatException, IOException, InstantiationException,
+            InvocationTargetException {
+
+        return BaseReadUtil.read(is, clazz);
     }
 
 }
