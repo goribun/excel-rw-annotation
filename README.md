@@ -31,4 +31,7 @@ A simple tools for reading and writing excel by annotation
 ```java  
     byte[] bytes = ExcelHelper.write(personList, Person.class);
 ```    
+```java
+    List<Persion> persionList = ExcelHelper.read(is, Persion.class);
+```
     
