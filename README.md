@@ -39,7 +39,7 @@ A simple tools for reading and writing excel by annotation
 ### read
 
 ```java
-    List<Persion> persionList = ExcelHelper.read(is, Persion.class);
+    List<Persion> persionList = ExcelHelper.read(inputStream, Persion.class);
 ```
 
 ````java
