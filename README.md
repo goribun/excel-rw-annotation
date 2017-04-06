@@ -3,7 +3,7 @@ A simple tools for reading and writing excel by annotation
 
 ## Example
 
-### write
+### annotation
 ```java
     @ExcelField(name = "姓名")
     private String name;
@@ -26,11 +26,13 @@ A simple tools for reading and writing excel by annotation
     @ExcelField(name = "周度", string = "第{{value}}周")
     private int weekly;
 ```
-
+### write
 
 ```java  
     byte[] bytes = ExcelHelper.write(personList, Person.class);
-```    
+```  
+### read
+
 ```java
     List<Persion> persionList = ExcelHelper.read(is, Persion.class);
 ```
