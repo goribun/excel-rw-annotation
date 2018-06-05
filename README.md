@@ -34,12 +34,12 @@ A simple tools for reading and writing excel by annotation
 
 ```java
     //只导出注解tags包含2以及没有tags属性的字段
-    byte[] bytes = ExcelHelper.write(persionList, Persion.class, 2);
+    byte[] bytes = ExcelHelper.write(personList, Person.class, 2);
 ```
 ### read
 
 ```java
-    List<Persion> persionList = ExcelHelper.read(inputStream, Persion.class);
+    List<Person> persionList = ExcelHelper.read(inputStream, Persion.class);
 ```
 
 ````java
