@@ -143,7 +143,8 @@ public class BaseReadUtil {
                 if (Cell.CELL_TYPE_NUMERIC == cell.getCellType()) {
                     valInt = Double.valueOf(cell.getNumericCellValue()).intValue();
                 } else {
-                    valInt = Integer.valueOf(cell.getStringCellValue());
+                    valInt = StringUtils.isBlank(cell.getStringCellValue()) ? null : Integer.valueOf(cell
+                            .getStringCellValue());
                 }
                 entity.getMethod().invoke(object, valInt);
 
@@ -153,7 +154,8 @@ public class BaseReadUtil {
                 if (Cell.CELL_TYPE_NUMERIC == cell.getCellType()) {
                     valLong = Double.valueOf(cell.getNumericCellValue()).longValue();
                 } else {
-                    valLong = Long.valueOf(cell.getStringCellValue());
+                    valLong = StringUtils.isBlank(cell.getStringCellValue()) ? null : Long.valueOf(cell
+                            .getStringCellValue());
                 }
                 entity.getMethod().invoke(object, valLong);
 
@@ -163,7 +165,8 @@ public class BaseReadUtil {
                 if (Cell.CELL_TYPE_NUMERIC == cell.getCellType()) {
                     valDecimal = new BigDecimal(cell.getNumericCellValue());
                 } else {
-                    valDecimal = new BigDecimal(cell.getStringCellValue());
+                    valDecimal = StringUtils.isBlank(cell.getStringCellValue()) ? null : new BigDecimal(cell
+                            .getStringCellValue());
                 }
                 entity.getMethod().invoke(object, valDecimal);
                 break;
@@ -172,7 +175,8 @@ public class BaseReadUtil {
                 if (Cell.CELL_TYPE_NUMERIC == cell.getCellType()) {
                     valDouble = cell.getNumericCellValue();
                 } else {
-                    valDouble = new Double(cell.getStringCellValue());
+                    valDouble = StringUtils.isBlank(cell.getStringCellValue()) ? null : new Double(cell
+                            .getStringCellValue());
                 }
                 entity.getMethod().invoke(object, valDouble);
                 break;
