@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -354,10 +355,9 @@ public class BaseReadUtil {
                     // 如果是纯数字
                     else {
                         //避免科学计数
-                        java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
-                        nf.setGroupingUsed(false);
+                        DecimalFormat df = new DecimalFormat("#.########");
                         // 取得当前Cell的数值
-                        cellValue = String.valueOf(nf.format(cell.getNumericCellValue()));
+                        cellValue = String.valueOf(df.format(cell.getNumericCellValue()));
                     }
                     break;
                 }
