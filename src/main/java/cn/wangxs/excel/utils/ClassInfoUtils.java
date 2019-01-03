@@ -14,7 +14,7 @@ import cn.wangxs.excel.annotation.ExcelField;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * @author wangxuesong wangxuesong0302@autohome.com.cn
+ * @author wangxuesong
  * @version 1.0
  */
 public class ClassInfoUtils {
