@@ -12,6 +12,7 @@ import java.util.List;
 import cn.wangxs.excel.FieldInfo;
 import cn.wangxs.excel.annotation.ExcelField;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.util.HSSFColor;
 
 /**
  * @author wangxuesong
@@ -106,6 +107,7 @@ public class ClassInfoUtils {
             if (exportField == null) {
                 continue;
             }
+            String filedName = field.getName();
             //取得注解属性
             String name = StringUtils.isBlank(exportField.name()) ? field.getName() : exportField.name();
             String format = exportField.format();
@@ -113,6 +115,9 @@ public class ClassInfoUtils {
             String mergeTo = "";
             String separator = exportField.separator();
             String string = exportField.string();
+            Class colorClass = exportField.color();
+            String expression = exportField.expression();
+
             int[] tags = exportField.tags();
             int order = exportField.order();
             int width = exportField.width();
@@ -121,7 +126,7 @@ public class ClassInfoUtils {
             Method getMethod = pd.getReadMethod();
             //创建Field信息对象 TODO mergeTO后续完善
             FieldInfo fieldInfo = new FieldInfo(name, order, format, width, defaultValue, getMethod, mergeTo,
-                    separator, string, tags);
+                    separator, string, tags, colorClass, expression, filedName);
             fieldInfoList.add(fieldInfo);
         }
         //设置排序

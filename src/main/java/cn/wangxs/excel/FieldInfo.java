@@ -1,5 +1,7 @@
 package cn.wangxs.excel;
 
+import org.apache.poi.hssf.util.HSSFColor;
+
 import java.lang.reflect.Method;
 
 /**
@@ -9,24 +11,67 @@ import java.lang.reflect.Method;
  */
 public class FieldInfo {
 
-    private String name;//表头
-    private int order;//顺序
-    private String format;//格式
-    private int width;//宽度
-    private String defaultValue;//默认值
-    private int[] tags;//标记
-    private String mergeTo;//合并到
-    private String separator;//分隔符
-    private String string;//处理"第3周"类似情况
+    /**
+     * 表头
+     */
+    private String name;
+    /**
+     * 顺序
+     */
+    private int order;
+    /**
+     * 格式
+     */
+    private String format;
+    /**
+     * 宽度
+     */
+    private int width;
+    /**
+     * 默认值
+     */
+    private String defaultValue;
+    /**
+     * 标记
+     */
+    private int[] tags;
+    /**
+     * 合并到
+     */
+    private String mergeTo;
+    /**
+     * 分隔符
+     */
+    private String separator;
+    /**
+     * 处理"第3周"类似情况
+     */
+    private String string;
+    /**
+     * 满足表达式后的颜色
+     */
+    private HSSFColor color;
+    /**
+     * 需要高亮显示的表达式
+     */
+    private String expression;
 
-    private Method method;//getter
+    /**
+     * 字段名称
+     */
+    private String filedName;
+
+    /**
+     * 字段的getter 方法
+     */
+    private Method method;
 
     public FieldInfo() {
 
     }
 
     public FieldInfo(String name, int order, String format, int width, String defaultValue, Method method, String
-            mergeTo, String separator, String string, int[] tags) {
+            mergeTo, String separator, String string, int[] tags, Class<HSSFColor> color, String expression, String filedName) {
         this.name = name;
         this.order = order;
         this.format = format;
@@ -37,6 +82,23 @@ public class FieldInfo {
         this.separator = separator;
         this.string = string;
         this.tags = tags;
+        this.color = getInstance(color);
+        this.expression = expression;
+        this.filedName = filedName;
+    }
+
+    private HSSFColor getInstance(Class colorClassName) {
+        Object o = null;
+        try {
+            o = colorClassName.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (o instanceof HSSFColor) {
+            return (HSSFColor) o;
+        }
+
+        return new HSSFColor.RED();
     }
 
     public String getName() {
@@ -119,4 +181,27 @@ public class FieldInfo {
         this.string = string;
     }
 
+    public String getExpression() {
+        return expression;
+    }
+
+    public void setExpression(String expression) {
+        this.expression = expression;
+    }
+
+    public HSSFColor getColor() {
+        return color;
+    }
+
+    public void setColor(HSSFColor color) {
+        this.color = color;
+    }
+
+    public String getFiledName() {
+        return filedName;
+    }
+
+    public void setFiledName(String filedName) {
+        this.filedName = filedName;
+    }
 }

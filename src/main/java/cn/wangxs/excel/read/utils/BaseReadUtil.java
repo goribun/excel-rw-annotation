@@ -1,5 +1,16 @@
 package cn.wangxs.excel.read.utils;
 
+import cn.wangxs.excel.FieldInfo;
+import cn.wangxs.excel.annotation.ExcelField;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.POIXMLDocument;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
@@ -13,28 +24,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import cn.wangxs.excel.FieldInfo;
-import cn.wangxs.excel.annotation.ExcelField;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.POIXMLDocument;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.util.*;
 
 /**
  * @author wangxuesong
@@ -109,7 +99,9 @@ public class BaseReadUtil {
         String fieldClass = ts[0].toString();
         switch (fieldClass) {
             case "class java.lang.String":
-                cell.setCellType(Cell.CELL_TYPE_STRING);
+                if(cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                    cell.setCellType(Cell.CELL_TYPE_STRING);
+                }
                 String cellValue = cell.getStringCellValue();
                 if (StringUtils.isNotEmpty(cellValue)) {
                     cellValue = cellValue.trim();

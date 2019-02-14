@@ -1,15 +1,16 @@
 package cn.wangxs.excel.write.row;
 
-import java.util.Date;
-
 import cn.wangxs.excel.write.sheet.SheetContext;
 import cn.wangxs.excel.write.style.StyleConfiguration;
 import cn.wangxs.excel.write.workbook.WorkbookContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
+
+import java.util.Date;
 
 /**
  * 原生Row的包装类
@@ -45,6 +46,20 @@ public class RowContext {
     }
 
     /**
+     * 自定义样式
+     *
+     * @param text
+     * @param color
+     * @return
+     */
+    public RowContext text(String text, HSSFColor color) {
+        if (color == null) {
+            return text(text);
+        }
+        return writeText(text, styleConfiguration.getHighLight(color));
+    }
+
+    /**
      * 写字符串方法
      * 重载方法，支持自定义CellStyle
      *
@@ -63,6 +78,21 @@ public class RowContext {
      */
     public RowContext number(Number number) {
         return writeNumber(number, styleConfiguration.getNumberStyle());
+    }
+
+
+    /**
+     * 自定义样式
+     *
+     * @param number
+     * @param color
+     * @return
+     */
+    public RowContext number(Number number, HSSFColor color) {
+        if (color == null) {
+            return number(number);
+        }
+        return writeNumber(number, styleConfiguration.getHighLight(color));
     }
 
     /**
@@ -93,7 +123,18 @@ public class RowContext {
      * @param format 格式化
      */
     public RowContext decimal(Number number, String format) {
-        return writeNumber(number, styleConfiguration.getCustomFormatStyle(format));
+        return writeNumber(number, styleConfiguration.getCustomFormatStyle(format, null));
+    }
+
+    /**
+     * 写小数
+     * 重载的方法，支持自定义格式化
+     *
+     * @param number 小数
+     * @param format 格式化
+     */
+    public RowContext decimal(Number number, String format, HSSFColor color) {
+        return writeNumber(number, styleConfiguration.getCustomFormatStyle(format, color));
     }
 
 
@@ -114,7 +155,18 @@ public class RowContext {
      * @param format 格式化格式
      */
     public RowContext date(Date date, String format) {
-        return writeDate(date, styleConfiguration.getCustomFormatStyle(format));
+        return writeDate(date, styleConfiguration.getCustomFormatStyle(format, null));
+    }
+
+    /**
+     * 写日期
+     * 重载的方法，支持自定义格式化
+     *
+     * @param date   日期
+     * @param format 格式化格式
+     */
+    public RowContext date(Date date, String format, HSSFColor color) {
+        return writeDate(date, styleConfiguration.getCustomFormatStyle(format, color));
     }
 
     /**

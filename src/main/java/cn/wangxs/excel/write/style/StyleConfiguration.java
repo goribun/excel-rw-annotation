@@ -28,6 +28,8 @@ public class StyleConfiguration {
 
     private static final Byte DATA_FORMAT_KEY = 20;
 
+    private static final Byte HIGHLIGHT_KEY = 38;
+
     private static final Byte FONT_KEY = 30;
 
     private final Map<Byte, CellStyle> buildInStyleMap = new HashMap<>(8);//内建样式
@@ -58,6 +60,22 @@ public class StyleConfiguration {
         this.setCommonStyle(headerStyle);
         buildInStyleMap.put(HEADER_STYLE_KEY, headerStyle);
         return headerStyle;
+    }
+
+    /**
+     * 高亮样式
+     * @return
+     */
+    public CellStyle getHighLight(HSSFColor color){
+        if (buildInStyleMap.containsKey(HIGHLIGHT_KEY)) {
+            return buildInStyleMap.get(HIGHLIGHT_KEY);
+        }
+        CellStyle highLightStyle = workbook.createCellStyle();
+        highLightStyle.setFillForegroundColor(color.getIndex());
+        highLightStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        this.setCommonStyle(highLightStyle);
+        buildInStyleMap.put(HIGHLIGHT_KEY,highLightStyle);
+        return highLightStyle;
     }
 
     /**
@@ -152,10 +170,10 @@ public class StyleConfiguration {
      * @param format 格式
      * @return 样式对象
      */
-    public CellStyle getCustomFormatStyle(String format) {
+    public CellStyle getCustomFormatStyle(String format,HSSFColor color) {
 
         //存在对应格式直接返回
-        if (customFormatStyleMap.containsKey(format)) {
+        if (customFormatStyleMap.containsKey(format) && color== null) {
             return customFormatStyleMap.get(format);
         }
         CellStyle customDateStyle = workbook.createCellStyle();
@@ -164,9 +182,14 @@ public class StyleConfiguration {
             buildInFormatMap.put(DATA_FORMAT_KEY, dataFormat);
         }
         customDateStyle.setDataFormat(buildInFormatMap.get(DATA_FORMAT_KEY).getFormat(format));
+        if (color == null){
+            //放入map缓存
+            customFormatStyleMap.put(format, customDateStyle);
+        }else {
+            customDateStyle.setFillForegroundColor(color.getIndex());
+            customDateStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        }
         this.setCommonStyle(customDateStyle);
-        //放入map缓存
-        customFormatStyleMap.put(format, customDateStyle);
 
         return customDateStyle;
     }

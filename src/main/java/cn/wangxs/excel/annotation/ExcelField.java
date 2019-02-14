@@ -1,5 +1,7 @@
 package cn.wangxs.excel.annotation;
 
+import org.apache.poi.hssf.util.HSSFColor;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -58,4 +60,14 @@ public @interface ExcelField {
      * 在合并字段时使用
      */
     String separator() default "";
+
+    /**
+     * 需要高亮显示的表达式条件
+     */
+    String expression() default "";
+
+    /**
+     * 高亮显示的颜色
+     */
+    Class color() default HSSFColor.RED.class;
 }
