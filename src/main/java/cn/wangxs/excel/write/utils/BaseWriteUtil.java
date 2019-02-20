@@ -1,15 +1,5 @@
 package cn.wangxs.excel.write.utils;
 
-import java.beans.IntrospectionException;
-import java.lang.reflect.InvocationTargetException;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
 import cn.wangxs.excel.FieldInfo;
 import cn.wangxs.excel.utils.ClassInfoUtils;
 import cn.wangxs.excel.write.row.RowContext;
@@ -17,7 +7,17 @@ import cn.wangxs.excel.write.sheet.SheetContext;
 import cn.wangxs.excel.write.workbook.WorkbookContext;
 import cn.wangxs.excel.write.workbook.WorkbookFactory;
 import cn.wangxs.excel.write.workbook.WorkbookType;
+import org.apache.commons.jexl2.Expression;
+import org.apache.commons.jexl2.JexlContext;
+import org.apache.commons.jexl2.JexlEngine;
+import org.apache.commons.jexl2.MapContext;
 import org.apache.commons.lang3.StringUtils;
+
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author wangxuesong
@@ -72,13 +72,22 @@ public class BaseWriteUtil {
                     //类型指定处理为字符串
                     excelType = ClassInfoUtils.EXCEL_STRING_TYPE;
                 }
-
+                boolean isStyle = false;
+                if (!fieldInfo.getExpression().isEmpty()) {
+                    Map<String, Object> args = new HashMap<>();
+                    args.put(fieldInfo.getFiledName(), value);
+                    isStyle = convertToCode(fieldInfo.getExpression(), args);
+                }
+                if (!isStyle) {
+                    fieldInfo.setColor(null);
+                }
                 switch (excelType) {
                     case ClassInfoUtils.EXCEL_NUMBER_TYPE:
-                        rowContext.number((Number) value);
+
+                        rowContext.number((Number) value, fieldInfo.getColor());
                         break;
                     case ClassInfoUtils.EXCEL_DECIMAL_TYPE:
-                        rowContext.decimal((Number) value, fieldInfo.getFormat());
+                        rowContext.decimal((Number) value, fieldInfo.getFormat(), fieldInfo.getColor());
                         break;
                     case ClassInfoUtils.EXCEL_DATE_TYPE:
                         rowContext.date((Date) value, fieldInfo.getFormat());
@@ -87,7 +96,7 @@ public class BaseWriteUtil {
                         //处理字符串和其他类型，对象为null则处理为默认值
                         String obj = String.valueOf((value == null
                                 || StringUtils.isBlank(value.toString())) ? fieldInfo.getDefaultValue() : value);
-                        rowContext.text(obj);
+                        rowContext.text(obj, fieldInfo.getColor());
                         break;
                 }
 
@@ -96,10 +105,24 @@ public class BaseWriteUtil {
                 if (width > 0) {
                     rowContext.setColumnWidth(width);
                 }
-
             }
         }
         return workbookContext.toNativeBytes();
+    }
+
+    /**
+     * 条件执行器
+     *
+     * @param exp
+     * @param args
+     * @return
+     */
+    private static boolean convertToCode(String exp, Map<String, Object> args) {
+        JexlEngine engine = new JexlEngine();
+        Expression expression = engine.createExpression(exp);
+        JexlContext context = new MapContext();
+        args.forEach(context::set);
+        return (boolean) expression.evaluate(context);
     }
 
     /**
