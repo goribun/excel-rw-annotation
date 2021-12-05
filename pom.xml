@@ -11,7 +11,7 @@
     <name>excel-rw-annotation</name>
 
     <properties>
-        <poi.version>3.14</poi.version>
+        <poi.version>3.17</poi.version>
         <commons-lang3.version>3.5</commons-lang3.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
