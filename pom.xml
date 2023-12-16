@@ -44,7 +44,7 @@
         <repository>
             <id>nexus</id>
             <name>nexus</name>
-            <url>http://112.74.43.70:9596/nexus/content/groups/public/</url>
+            <url>https://112.74.43.70:9596/nexus/content/groups/public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -56,12 +56,12 @@
     <distributionManagement>
         <repository>
             <id>user-releases</id>
-            <url>http://112.74.43.70:9596/nexus/content/repositories/releases/</url>
+            <url>https://112.74.43.70:9596/nexus/content/repositories/releases/</url>
         </repository>
 
         <snapshotRepository>
             <id>user-snapshots</id>
-            <url>http://112.74.43.70:9596/nexus/content/repositories/snapshots/</url>
+            <url>https://112.74.43.70:9596/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
     <build>
